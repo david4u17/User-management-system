@@ -26,8 +26,9 @@ git clone https://github.com/david4u17/User-management-system.git
 cd user-management-system
 
 3. Install the dependencies:
+```
 composer install
-
+```
 4. Create a new `.env` file by copying the `.env.example` file:
 cp .env.example .env
 
