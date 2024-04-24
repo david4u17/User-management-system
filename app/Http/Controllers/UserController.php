@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -34,6 +35,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -43,12 +45,18 @@ class UserController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        User::create($validatedData);
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->age = $validatedData['age'];
+        $user->password = $validatedData['password'];
+        $user->save();
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -81,6 +89,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -90,13 +100,16 @@ class UserController extends Controller
             'password' => 'nullable|min:6',
         ]);
 
-        $user = User::findOrFail($id);
-
         if ($request->has('password')) {
-            $validatedData['password'] = bcrypt($validatedData['password']);
+            $validatedData['password'] = Hash::make($validatedData['password']);
         }
 
-        $user->update($validatedData);
+        User::where('id', '=', $id)->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'age' => $validatedData['age'],
+            'password' => $validatedData['password']
+        ]);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
