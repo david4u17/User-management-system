@@ -18,7 +18,7 @@ A simple CRUD (Create, Read, Update, Delete) application built with Laravel and 
 
 ## Installation
 
-# Clone the repository:
+### Clone the repository:
 git clone https://github.com/david4u17/User-management-system.git
 
 2. Navigate to the project directory:
